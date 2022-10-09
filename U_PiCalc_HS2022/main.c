@@ -27,24 +27,33 @@ int main( void )
 	
 	vInitClock( );
 	
-	// UI-Task 
-	task_status = xTaskCreate( ui_handler,
-							   (const char *) "uiTask",
-							   TASK_STACK_UI,
-							   NULL,
-							   TASK_PRIORITY_UI,
-							   &task_state[ UI_TASK_HANDLE ].handle );
-	configASSERT( task_status == pdPASS );								// Prüfen ob der Task korrekt erstellt wurde
+	/* UI-Task -------------------------------------------------------------------------------- */ 
+	task_status = xTaskCreate( ui_handler,								// Task function
+							   (const char *) "uiTask",					// Task name
+							   TASK_STACK_UI,							// Task stack size
+							   NULL,									//
+							   TASK_PRIORITY_UI,						// Task Priority
+							   &task_state[ UI_TASK_HANDLE ].handle );	// Task Handle
+	configASSERT( task_status == pdPASS );								// Check if task created correct
 		
-	// Controll Task
+	/* Controll Task --------------------------------------------------------------------------- */
 	task_status = xTaskCreate( controllerTask,
-							   (const char *) "control_tsk",
-							   configMINIMAL_STACK_SIZE+150, 
+							   (const char *) "ctlTask",
+							   TASK_STACK_CTL, 
 				               NULL,
-				               3,
-				               NULL );
-	configASSERT( task_status == pdPASS );				// Prüfen ob der Task korrekt erstellt wurde
+				               TASK_PRIORITY_CTL,
+				               &task_state[ CTL_TASK_HANDLE ].handle );
+	configASSERT( task_status == pdPASS );				
 
+	/* Calculate Leibniz Task ------------------------------------------------------------------ */
+	task_status = xTaskCreate( calc_leibniz,
+							   (const char *) "clcLbz",
+							   TASK_STACK_CALC,
+							   NULL,
+							   TASK_STACK_CALC,
+							   &task_state[ CALC_LBZ_TASK_HANDLE ].handle );
+	configASSERT( task_status == pdPASS );
+	
 	/* Start the scheduler */
 	vTaskStartScheduler( );
 	

@@ -25,7 +25,7 @@ void ui_handler( void *pvParameters )
 	
 	for( ;; )
 	{
-		
+
 		
 		vTaskDelay( 500 / portTICK_RATE_MS ); // Refresh Display Content all 500ms
 	}
