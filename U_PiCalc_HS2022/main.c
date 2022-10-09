@@ -1,5 +1,5 @@
 /*
- * U_PiCalc_HS2022.c
+ * main.c
  *
  * Created: 08.10.2022 18:25:05
  * Author : MootSeeker
@@ -9,13 +9,34 @@
 
 void controllerTask(void* pvParameters);
 
+/* Task handles for heap overflow monitoring. */
+#define TASK_STATES_MAX ( 5 )
+
+typedef struct
+{
+	TaskHandle_t handle;
+	BaseType_t stack_high_water_mark;
+} st_task_state_t;
+
+st_task_state_t task_state[ TASK_STATES_MAX ];
+
+
 int main( void )
 {
 	BaseType_t task_status;
 	
 	vInitClock( );
-	vInitDisplay( );
 	
+	// UI-Task 
+	task_status = xTaskCreate( ui_handler,
+							   (const char *) "uiTask",
+							   TASK_STACK_UI,
+							   NULL,
+							   TASK_PRIORITY_UI,
+							   &task_state[ UI_TASK_HANDLE ].handle );
+	configASSERT( task_status == pdPASS );								// Prüfen ob der Task korrekt erstellt wurde
+		
+	// Controll Task
 	task_status = xTaskCreate( controllerTask,
 							   (const char *) "control_tsk",
 							   configMINIMAL_STACK_SIZE+150, 
@@ -24,9 +45,7 @@ int main( void )
 				               NULL );
 	configASSERT( task_status == pdPASS );				// Prüfen ob der Task korrekt erstellt wurde
 
-	vDisplayClear( );
-	vDisplayWriteStringAtPos( 0, 0, "PI-Calc HS2022" );
-	
+	/* Start the scheduler */
 	vTaskStartScheduler( );
 	
 	return 0;

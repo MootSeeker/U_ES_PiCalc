@@ -39,7 +39,23 @@
 #include "NHD0420Driver.h"
 #include "ButtonHandler.h"
 
+//Module Includes
+#include "ui.h"
 
+
+/*--- System Configuration ---------------------------------------------------
+ * - Task Stack and Priority
+ */
+
+/* Task Stack Sizes
+ * NOTE: Stack sizes in WORDs, Heap in BYTEs! */
+#define TASK_STACK_UI		( configMINIMAL_STACK_SIZE + 150 )
+
+/* Task Priorities */
+#define TASK_PRIORITY_UI	( 1 )
+
+/* Task Handles */
+#define UI_TASK_HANDLE		( 0 )
 
 
 #endif /* MAIN_H_ */
