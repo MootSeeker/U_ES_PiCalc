@@ -20,9 +20,9 @@ void calc_leibniz( void *pvParameters )
 	
 	for( ;; )
 	{
-			
-			pi_4 = pi_4 - (1.0 / i) + (1.0/(i+2));
-			i+=4;  
+		
+		pi_4 = pi_4 - (1.0 / i) + (1.0/(i+2));
+		i += 4;  
 	
 		pi_calc = pi_4 * 4; 
 		vTaskDelay( 1 / portTICK_RATE_MS ); // Go back to scheduler

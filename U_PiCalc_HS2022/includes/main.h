@@ -62,7 +62,7 @@
 /* Task Handles */
 #define CTL_TASK_HANDLE			( 0 )
 #define UI_TASK_HANDLE			( 1 )
-#define CALC_LBZ_TASK_HANDLE	( 2 )
+#define CALC_LBZ_TASK_HANDLE		( 2 )
 
 
 #endif /* MAIN_H_ */
