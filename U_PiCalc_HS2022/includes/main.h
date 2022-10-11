@@ -56,7 +56,7 @@
 
 /* Task Priorities */
 #define TASK_PRIORITY_CTL	( 3 )
-#define TASK_PRIORITY_UI	( 2 )
+#define TASK_PRIORITY_UI		( 2 )
 #define TASK_PRIORITY_CALC	( 1 )		// Global calculation priority
 
 /* Task Handles */
@@ -64,5 +64,17 @@
 #define UI_TASK_HANDLE			( 1 )
 #define CALC_LBZ_TASK_HANDLE		( 2 )
 
+/*--- Event Group -------------------------------------------------------------- */
+EventGroupHandle_t xPiState;
+
+// Event Bits
+#define BIT0		( 1U << 0 )	// Start Calculation
+#define BIT1		( 1U << 1 ) // Stop Calculation
+#define BIT2		( 1U << 2 ) // Select Calculation algorithm  
+#define BIT3		( 1U << 3 ) // Reset Calculation task
+#define BIT4		( 1U << 4 )
+#define BIT5		( 1U << 5 )
+#define BIT6		( 1U << 6 )	// Leibnitz Task state
+#define BIT7		( 1U << 7 ) // Bellard Task state
 
 #endif /* MAIN_H_ */

@@ -27,6 +27,9 @@ int main( void )
 	
 	vInitClock( );
 	
+	/* Create Event Group --------------------------------------------------------------------- */
+	xPiState = xEventGroupCreate( ); 
+	
 	/* UI-Task -------------------------------------------------------------------------------- */ 
 	task_status = xTaskCreate( ui_handler,								// Task function
 							   (const char *) "uiTask",					// Task name
@@ -64,6 +67,11 @@ void controllerTask( void* pvParameters )
 {
 	initButtons( );
 	
+	while( xPiState == NULL)					// Wait for EventGroup to be initialized in other task
+	{ 
+		vTaskDelay( 10 / portTICK_RATE_MS );
+	}
+	
 	for( ;; ) 
 	{
 		updateButtons( );
@@ -76,7 +84,8 @@ void controllerTask( void* pvParameters )
 		}
 		if( getButtonPress( BUTTON2 ) == SHORT_PRESSED ) 
 		{
-			
+			xEventGroupSetBits( xPiState, BIT0 ); 
+			xEventGroupClearBits( xPiState, BIT1 ); 
 		}
 		if( getButtonPress( BUTTON3 ) == SHORT_PRESSED ) 
 		{
@@ -92,7 +101,8 @@ void controllerTask( void* pvParameters )
 		}
 		if( getButtonPress( BUTTON2 ) == LONG_PRESSED ) 
 		{
-			
+			xEventGroupSetBits( xPiState, BIT1 );
+			xEventGroupClearBits( xPiState, BIT0 ); 
 		}
 		if( getButtonPress( BUTTON3 ) == LONG_PRESSED ) 
 		{
