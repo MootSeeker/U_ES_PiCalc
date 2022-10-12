@@ -12,5 +12,6 @@
 
 
 void calc_leibniz( void *pvParameters ); 
+void calc_bellard( void *pvParameters ); 
 
 #endif /* CALCULATION_H_ */

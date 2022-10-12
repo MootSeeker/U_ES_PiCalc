@@ -56,13 +56,14 @@
 
 /* Task Priorities */
 #define TASK_PRIORITY_CTL	( 3 )
-#define TASK_PRIORITY_UI		( 2 )
+#define TASK_PRIORITY_UI	( 2 )
 #define TASK_PRIORITY_CALC	( 1 )		// Global calculation priority
 
 /* Task Handles */
 #define CTL_TASK_HANDLE			( 0 )
 #define UI_TASK_HANDLE			( 1 )
-#define CALC_LBZ_TASK_HANDLE		( 2 )
+#define CALC_LBZ_TASK_HANDLE	( 2 )
+#define CALC_BLD_TASK_HANDLE	( 3 )
 
 /*--- Event Group -------------------------------------------------------------- */
 EventGroupHandle_t xPiState;

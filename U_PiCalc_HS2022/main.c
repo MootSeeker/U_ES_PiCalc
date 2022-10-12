@@ -53,10 +53,19 @@ int main( void )
 							   (const char *) "clcLbz",
 							   TASK_STACK_CALC,
 							   NULL,
-							   TASK_STACK_CALC,
+							   TASK_PRIORITY_CALC,
 							   &task_state[ CALC_LBZ_TASK_HANDLE ].handle );
 	configASSERT( task_status == pdPASS );
 	
+	/* Calculate Bellard Task ------------------------------------------------------------------ */
+	task_status = xTaskCreate( calc_leibniz,
+							   (const char *) "clcBld",
+							   TASK_STACK_CALC,
+							   NULL,
+							   TASK_PRIORITY_CALC,
+							   &task_state[ CALC_BLD_TASK_HANDLE ].handle );
+	configASSERT( task_status == pdPASS );
+		
 	/* Start the scheduler */
 	vTaskStartScheduler( );
 	
