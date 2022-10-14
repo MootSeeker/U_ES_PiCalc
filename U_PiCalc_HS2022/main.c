@@ -58,7 +58,7 @@ int main( void )
 	configASSERT( task_status == pdPASS );
 	
 	/* Calculate Bellard Task ------------------------------------------------------------------ */
-	task_status = xTaskCreate( calc_leibniz,
+	task_status = xTaskCreate( calc_bellard,
 							   (const char *) "clcBld",
 							   TASK_STACK_CALC,
 							   NULL,
@@ -87,14 +87,12 @@ void controllerTask( void* pvParameters )
 		
 		if( getButtonPress( BUTTON1 ) == SHORT_PRESSED ) 
 		{
-			char pistring[ 12 ];
-			sprintf( &pistring[0], "PI: %.8f", M_PI );
-			vDisplayWriteStringAtPos( 1, 0, "%s", pistring );
+			xEventGroupSetBits( xPiState, BIT0 );
+			xEventGroupClearBits( xPiState, BIT1 );
 		}
 		if( getButtonPress( BUTTON2 ) == SHORT_PRESSED ) 
 		{
-			xEventGroupSetBits( xPiState, BIT0 ); 
-			xEventGroupClearBits( xPiState, BIT1 ); 
+			xEventGroupSetBits( xPiState, BIT2); //Set Calc selection to 1
 		}
 		if( getButtonPress( BUTTON3 ) == SHORT_PRESSED ) 
 		{
@@ -106,12 +104,12 @@ void controllerTask( void* pvParameters )
 		}
 		if( getButtonPress( BUTTON1 ) == LONG_PRESSED ) 
 		{
-			
+			xEventGroupSetBits( xPiState, BIT1 );
+			xEventGroupClearBits( xPiState, BIT0 );
 		}
 		if( getButtonPress( BUTTON2 ) == LONG_PRESSED ) 
 		{
-			xEventGroupSetBits( xPiState, BIT1 );
-			xEventGroupClearBits( xPiState, BIT0 ); 
+			xEventGroupClearBits( xPiState, BIT2 );	//Set Calc selection to 0
 		}
 		if( getButtonPress( BUTTON3 ) == LONG_PRESSED ) 
 		{
