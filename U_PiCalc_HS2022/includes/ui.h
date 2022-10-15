@@ -10,6 +10,14 @@
 #define UI_H_
 
 
+typedef enum 
+{
+	MODE_IDLE, 
+	MODE_CALC_LBZ, 
+	MODE_CALC_BLD, 
+	
+}enDisplayMode;
+
 
 void ui_handler( void *pvParameters ); 
 

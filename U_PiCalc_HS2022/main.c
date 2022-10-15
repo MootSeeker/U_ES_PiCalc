@@ -87,12 +87,12 @@ void controllerTask( void* pvParameters )
 		
 		if( getButtonPress( BUTTON1 ) == SHORT_PRESSED ) 
 		{
-			xEventGroupSetBits( xPiState, BIT0 );
-			xEventGroupClearBits( xPiState, BIT1 );
+			xEventGroupSetBits( xPiState, START_CALC );
+			xEventGroupClearBits( xPiState, STOP_CALC );
 		}
 		if( getButtonPress( BUTTON2 ) == SHORT_PRESSED ) 
 		{
-			xEventGroupSetBits( xPiState, BIT2); //Set Calc selection to 1
+			xEventGroupSetBits( xPiState, CALC_SEL); //Set Calc selection to 1
 		}
 		if( getButtonPress( BUTTON3 ) == SHORT_PRESSED ) 
 		{
@@ -104,12 +104,12 @@ void controllerTask( void* pvParameters )
 		}
 		if( getButtonPress( BUTTON1 ) == LONG_PRESSED ) 
 		{
-			xEventGroupSetBits( xPiState, BIT1 );
-			xEventGroupClearBits( xPiState, BIT0 );
+			xEventGroupSetBits( xPiState, STOP_CALC );
+			xEventGroupClearBits( xPiState, START_CALC );
 		}
 		if( getButtonPress( BUTTON2 ) == LONG_PRESSED ) 
 		{
-			xEventGroupClearBits( xPiState, BIT2 );	//Set Calc selection to 0
+			xEventGroupClearBits( xPiState, CALC_SEL );	//Set Calc selection to 0
 		}
 		if( getButtonPress( BUTTON3 ) == LONG_PRESSED ) 
 		{

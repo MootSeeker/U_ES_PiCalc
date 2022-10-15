@@ -25,16 +25,16 @@ void calc_leibniz( void *pvParameters )
 	
 	for( ;; )
 	{
-		if( xEventGroupGetBits( xPiState ) != BIT2 )
+		if( xEventGroupGetBits( xPiState ) != CALC_SEL )
 		{
-			if( xEventGroupGetBits( xPiState ) == BIT0 )
+			if( xEventGroupGetBits( xPiState ) == START_CALC )
 			{
-				while( xEventGroupGetBits( xPiState ) != BIT1 ) 
+				do 
 				{
 					pi_4 = pi_4 - ( 1.0 / i ) + ( 1.0 / ( i + 2 ));
 					i += 4;			
 					pi_calc = pi_4 * 4;
-				} 
+				} while( xEventGroupGetBits( xPiState ) != STOP_CALC ); 
 			}
 		}
 	}
@@ -59,9 +59,9 @@ void calc_bellard( void *pvParameters )
 	
 	for( ;; )
 	{
-		if( xEventGroupGetBits( xPiState ) == BIT2 )	// Bellard Selected
+		if( xEventGroupGetBits( xPiState ) == CALC_SEL )	// Bellard Selected
 		{
-			if( xEventGroupGetBits( xPiState ) == BIT0 )	// Start 
+			if( xEventGroupGetBits( xPiState ) == START_CALC )	// Start 
 			{
 				do 
 				{
@@ -70,7 +70,7 @@ void calc_bellard( void *pvParameters )
 					
 					pi_calc = sum1 - sum2; 
 					n++; 
-				} while ( xEventGroupGetBits( xPiState ) != BIT1 );	//Stop
+				} while ( xEventGroupGetBits( xPiState ) != STOP_CALC );	//Stop
 			}
 		}
 	}	
