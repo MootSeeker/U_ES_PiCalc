@@ -38,35 +38,62 @@ void ui_handler( void *pvParameters )
 	{
 		event = xEventGroupGetBits(xPiState); 
 		
+		// Draw tilte on every page same :)
+		vDisplayClear(); //Clear Display before rewriting it
+		vDisplayWriteStringAtPos(0,0,"Pi Calculation V1.0 PEK"); 
+						
 		switch( mode )
 		{
 			case MODE_IDLE:
-				vDisplayClear(); //Clear Display before rewriting it
-				vDisplayWriteStringAtPos(0,0,"Pi Calculation V1.0"); //Draw Title
-				vDisplayWriteStringAtPos(1,0,"Mode Idle");
+
+				vDisplayWriteStringAtPos(1,0,"Mode: Idle");
 				
-				if( event == CALC_SEL )
+				if( (xEventGroupGetBits( xPiState ) == CALC_SEL ) && (xEventGroupGetBits( xPiState ) == START_CALC) )
+				{
+					vDisplayWriteStringAtPos(2,0,"Selection: BLD");
+					mode = MODE_CALC_BLD; 
+				}
+				else if( (xEventGroupGetBits( xPiState ) != CALC_SEL) && (xEventGroupGetBits( xPiState ) == START_CALC))
 				{
 					vDisplayWriteStringAtPos(2,0,"Selection: LBZ");
+					mode = MODE_CALC_LBZ; 
+				}
+				else if( (xEventGroupGetBits( xPiState ) == CALC_SEL) && (xEventGroupGetBits( xPiState ) != START_CALC))
+				{
+					vDisplayWriteStringAtPos(2,0,"Selection: BLD"); //Show selection but not change mode
 				}
 				else
 				{
-					vDisplayWriteStringAtPos(2,0,"Selection: BLD");	
+					vDisplayWriteStringAtPos(2,0,"Selection: LBZ"); //Show selection but not change mode
 				}
+					 	
 			break;  
 				
 			case MODE_CALC_LBZ:
+				vDisplayWriteStringAtPos(1,0,"Mode: Calc Leibniz");
 				
+				//Display pi calculation on row three
+				
+				//Go back to idle when stop
+				if(xEventGroupGetBits( xPiState ) == STOP_CALC)mode = MODE_IDLE; 
 			break; 
 				 
 			case MODE_CALC_BLD:
+				vDisplayWriteStringAtPos(1,0,"Mode: Calc Bellard");
 				
+				//Display pi calculation on row three
+				
+				//Go back to idle when stop
+				if(xEventGroupGetBits( xPiState ) == STOP_CALC)mode = MODE_IDLE;
 			break; 
 				
 			default: 
-				
+				error( ERR_TEST ); //Wrong mode should not go to here, when yet -> reset system
 			break;  
 		}
+		
+		// Button name -> same for every mode
+		vDisplayWriteStringAtPos(3,0,"st|sp|rst|tgl"); // Start | Stop | Reset | Toggle
 		
 		vTaskDelay( 500 / portTICK_RATE_MS ); // Refresh Display Content all 500ms
 	}
