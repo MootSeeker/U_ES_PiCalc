@@ -52,7 +52,7 @@ void calc_leibniz( void *pvParameters )
 				{
 					pi_4 = f_sub(pi_4, f_sd(( 1.0 / i ) + ( 1.0 / ( i + 2 ))));
 					i += 4;
-					pi_calc = f_mult(pi_4, f_sd(4.000));
+					pi_calc = f_mult(pi_4, f_sd(4));
 				} while( !(xEventGroupGetBits( xPiState ) & STOP_CALC) );
 			}
 		}
