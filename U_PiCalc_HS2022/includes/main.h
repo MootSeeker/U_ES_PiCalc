@@ -50,8 +50,8 @@
 
 /* Task Stack Sizes
  * NOTE: Stack sizes in WORDs, Heap in BYTEs! */
-#define TASK_STACK_CTL		( configMINIMAL_STACK_SIZE + 150 )
-#define TASK_STACK_UI		( configMINIMAL_STACK_SIZE + 150 )
+#define TASK_STACK_CTL		( configMINIMAL_STACK_SIZE )
+#define TASK_STACK_UI		( configMINIMAL_STACK_SIZE + 200 )
 #define TASK_STACK_CALC		( configMINIMAL_STACK_SIZE )		// Global calculation stack size
 
 /* Task Priorities */
@@ -68,14 +68,14 @@
 /*--- Event Group -------------------------------------------------------------- */
 EventGroupHandle_t xPiState;
 
-// Event Bits
-#define START_CALC		( 1U << 0 )	// Start Calculation
-#define STOP_CALC		( 1U << 1 ) // Stop Calculation
-#define RESET_CALC		( 1U << 2 ) // Select Calculation algorithm  
-#define CALC_SEL		( 1U << 3 ) // Reset Calculation task
-#define LBZ_ACC			( 1U << 4 ) // LBZ Value is accurate
-#define BLD_ACC			( 1U << 5 ) // BLD Value is accurate
-#define LBZ_STATE		( 1U << 6 )	// Leibnitz Task state
-#define BLD_STATE		( 1U << 7 ) // Bellard Task state
+/*--- Event Bits --------------------------------------------------------------- */
+#define START_CALC		( 1U << 0UL )	// Start Calculation
+#define STOP_CALC		( 1U << 1UL )	// Stop Calculation
+#define RESET_CALC		( 1U << 2UL )	// Select Calculation algorithm  
+#define CALC_SEL		( 1U << 3UL )	// Reset Calculation task
+#define LBZ_ACC			( 1U << 4UL )	// LBZ Value is accurate
+#define BLD_ACC			( 1U << 5UL )	// BLD Value is accurate
+#define LBZ_STATE		( 1U << 6UL )	// Leibnitz Task state
+#define BLD_STATE		( 1U << 7UL )	// Bellard Task state
 
 #endif /* MAIN_H_ */
