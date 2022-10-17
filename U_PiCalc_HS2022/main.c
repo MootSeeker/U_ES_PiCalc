@@ -76,6 +76,8 @@ void controllerTask( void* pvParameters )
 {
 	initButtons( );
 	
+	static calc_tgl = 0; 
+	
 	while( xPiState == NULL)					// Wait for EventGroup to be initialized in other task
 	{ 
 		vTaskDelay( 10 / portTICK_RATE_MS );
@@ -87,13 +89,13 @@ void controllerTask( void* pvParameters )
 		
 		if( getButtonPress( BUTTON1 ) == SHORT_PRESSED ) // Start
 		{
-			xEventGroupSetBits( xPiState, START_CALC );
-			xEventGroupClearBits( xPiState, STOP_CALC );
+			xEventGroupSetBits( xPiState, START_CALC ); 
+			xEventGroupClearBits(xPiState, STOP_CALC);
 		}
 		if( getButtonPress( BUTTON2 ) == SHORT_PRESSED ) // Stop
 		{
 			xEventGroupSetBits( xPiState, STOP_CALC );
-			xEventGroupClearBits( xPiState, START_CALC );
+			xEventGroupClearBits(xPiState, START_CALC);
 		}
 		if( getButtonPress( BUTTON3 ) == SHORT_PRESSED ) // Reset
 		{
@@ -101,7 +103,18 @@ void controllerTask( void* pvParameters )
 		}
 		if( getButtonPress(BUTTON4) == SHORT_PRESSED ) // Toggle
 		{
-			xEventGroupSetBits( xPiState, CALC_SEL); //Set Calc selection to 1
+			if(calc_tgl) 
+			{
+				xEventGroupSetBits(xPiState, CALC_SEL_BLD); 
+				xEventGroupClearBits(xPiState, CALC_SEL_LBZ); 
+				calc_tgl = 0; 
+			}
+			else 
+			{
+				xEventGroupSetBits(xPiState, CALC_SEL_LBZ );
+				xEventGroupClearBits(xPiState, CALC_SEL_BLD );
+				calc_tgl = 1; 
+			}
 		}
 		if( getButtonPress( BUTTON1 ) == LONG_PRESSED ) 
 		{
@@ -117,7 +130,7 @@ void controllerTask( void* pvParameters )
 		}
 		if( getButtonPress( BUTTON4 ) == LONG_PRESSED ) 
 		{
-			xEventGroupClearBits( xPiState, CALC_SEL );	//Set Calc selection to 0
+			
 		}
 		vTaskDelay(10/portTICK_RATE_MS);
 	}

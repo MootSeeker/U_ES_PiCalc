@@ -18,6 +18,8 @@ void calc_leibniz( void *pvParameters )
 	
 	uint32_t i = 3; 
 	
+	EventBits_t xEventValue; 
+	
 	while( xPiState == NULL)					// Wait for EventGroup to be initialized in other task
 	{ 
 		vTaskDelay( 10 / portTICK_RATE_MS );
@@ -25,16 +27,31 @@ void calc_leibniz( void *pvParameters )
 	
 	for( ;; )
 	{
-		if( xEventGroupGetBits( xPiState ) != CALC_SEL )
+		//Wait until Task is selected
+		xEventValue = xEventGroupWaitBits(xPiState, CALC_SEL_LBZ, pdFALSE, pdFALSE, portMAX_DELAY); 
+		
+		if( xEventGroupGetBits( xPiState ) & STOP_CALC ) //When Stop than check for reset else calculate pi
 		{
-			if( xEventGroupGetBits( xPiState ) == START_CALC )
+			if( xEventGroupGetBits( xPiState ) & RESET_CALC )	//Reset Calculation parameter
 			{
-				do 
+				pi_calc = 1.0;
+				pi_4 = 1.0;  
+				i = 3; 
+				
+				//Clear Reset flag
+				xEventGroupClearBits(xPiState, RESET_CALC ); 
+			}
+		}
+		else
+		{
+			if(  xEventGroupGetBits( xPiState ) & START_CALC )
+			{
+				do
 				{
 					pi_4 = pi_4 - ( 1.0 / i ) + ( 1.0 / ( i + 2 ));
-					i += 4;			
+					i += 4;
 					pi_calc = pi_4 * 4;
-				} while( xEventGroupGetBits( xPiState ) != STOP_CALC ); 
+				} while( !(xEventGroupGetBits( xPiState ) & STOP_CALC) );
 			}
 		}
 	}
@@ -52,6 +69,8 @@ void calc_bellard( void *pvParameters )
 	
 	uint32_t n = 0; 
 
+	EventBits_t xEventValue;
+
 	while( xPiState == NULL)					// Wait for EventGroup to be initialized in other task
 	{
 		vTaskDelay( 10 / portTICK_RATE_MS );
@@ -59,18 +78,34 @@ void calc_bellard( void *pvParameters )
 	
 	for( ;; )
 	{
-		if( xEventGroupGetBits( xPiState ) == CALC_SEL )	// Bellard Selected
+		//Wait until Task is selected
+		xEventValue = xEventGroupWaitBits(xPiState, CALC_SEL_BLD, pdFALSE, pdFALSE, portMAX_DELAY); 
+		
+		if( xEventGroupGetBits( xPiState ) & STOP_CALC ) //When Stop than check for reset else calculate pi
 		{
-			if( xEventGroupGetBits( xPiState ) == START_CALC )	// Start 
+			if( xEventGroupGetBits( xPiState ) & RESET_CALC )	//Reset Calculation parameter
 			{
-				do 
+				pi_calc = 1.0;
+				sum1 = 1.0;
+				sum2 = 1.0;
+				n = 0;
+				
+				//Clear Reset flag
+				xEventGroupClearBits(xPiState, RESET_CALC );
+			}
+		}
+		else
+		{
+			if( xEventGroupGetBits( xPiState ) & START_CALC )
+			{
+				do
 				{
-					sum1 = ( pow(-1, n) / (( 2 * n + 1 ) * pow( 4, n ))); 
-					sum2 = (1/64) * (pow(-1, n)/pow(1024, n)) * ((32/(4*n+1)) + (8/(4*n+2)) + (1/(4*n+3))); 
-					
-					pi_calc = sum1 - sum2; 
-					n++; 
-				} while ( xEventGroupGetBits( xPiState ) != STOP_CALC );	//Stop
+					sum1 = ( pow(-1, n) / (( 2 * n + 1 ) * pow( 4, n )));
+					sum2 = (1/64) * (pow(-1, n)/pow(1024, n)) * ((32/(4*n+1)) + (8/(4*n+2)) + (1/(4*n+3)));
+						
+					pi_calc = sum1 - sum2;
+					n++;
+				} while ( !( xEventGroupGetBits( xPiState ) & STOP_CALC ));	//Stop
 			}
 		}
 	}	

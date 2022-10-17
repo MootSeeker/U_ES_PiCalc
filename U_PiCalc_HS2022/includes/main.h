@@ -71,10 +71,10 @@ EventGroupHandle_t xPiState;
 /*--- Event Bits --------------------------------------------------------------- */
 #define START_CALC		( 1U << 0UL )	// Start Calculation
 #define STOP_CALC		( 1U << 1UL )	// Stop Calculation
-#define RESET_CALC		( 1U << 2UL )	// Select Calculation algorithm  
-#define CALC_SEL		( 1U << 3UL )	// Reset Calculation task
-#define LBZ_ACC			( 1U << 4UL )	// LBZ Value is accurate
-#define BLD_ACC			( 1U << 5UL )	// BLD Value is accurate
+#define RESET_CALC		( 1U << 2UL )	// Reset Calculation task  
+#define CALC_SEL_LBZ	( 1U << 3UL )	// Select Calculation algorithm
+#define CALC_SEL_BLD	( 1U << 4UL )	// Select Calculation algorithm
+#define BIT5			( 1U << 5UL )	// unused
 #define LBZ_STATE		( 1U << 6UL )	// Leibnitz Task state
 #define BLD_STATE		( 1U << 7UL )	// Bellard Task state
 

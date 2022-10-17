@@ -32,12 +32,8 @@ void ui_handler( void *pvParameters )
 		vTaskDelay( 10 / portTICK_RATE_MS );
 	}
 	
-	EventBits_t event; 
-	
 	for( ;; )
 	{
-		event = xEventGroupGetBits(xPiState); 
-		
 		// Draw tilte on every page same :)
 		vDisplayClear(); //Clear Display before rewriting it
 		vDisplayWriteStringAtPos(0,0,"Pi Calculation V1.0 PEK"); 
@@ -48,23 +44,16 @@ void ui_handler( void *pvParameters )
 
 				vDisplayWriteStringAtPos(1,0,"Mode: Idle");
 				
-				if( (xEventGroupGetBits( xPiState ) == CALC_SEL ) && (xEventGroupGetBits( xPiState ) == START_CALC) )
-				{
-					vDisplayWriteStringAtPos(2,0,"Selection: BLD");
-					mode = MODE_CALC_BLD; 
-				}
-				else if( (xEventGroupGetBits( xPiState ) != CALC_SEL) && (xEventGroupGetBits( xPiState ) == START_CALC))
-				{
-					vDisplayWriteStringAtPos(2,0,"Selection: LBZ");
-					mode = MODE_CALC_LBZ; 
-				}
-				else if( (xEventGroupGetBits( xPiState ) == CALC_SEL) && (xEventGroupGetBits( xPiState ) != START_CALC))
+				if( xEventGroupGetBits( xPiState ) & CALC_SEL_BLD )
 				{
 					vDisplayWriteStringAtPos(2,0,"Selection: BLD"); //Show selection but not change mode
+					if( xEventGroupGetBits( xPiState ) & START_CALC ) mode = MODE_CALC_BLD; 
 				}
-				else
+				
+				if( xEventGroupGetBits( xPiState ) & CALC_SEL_LBZ )
 				{
 					vDisplayWriteStringAtPos(2,0,"Selection: LBZ"); //Show selection but not change mode
+					if( xEventGroupGetBits( xPiState ) & START_CALC ) mode = MODE_CALC_LBZ; 
 				}
 					 	
 			break;  
@@ -75,7 +64,7 @@ void ui_handler( void *pvParameters )
 				//Display pi calculation on row three
 				
 				//Go back to idle when stop
-				if(xEventGroupGetBits( xPiState ) == STOP_CALC)mode = MODE_IDLE; 
+				if( xEventGroupGetBits( xPiState ) & STOP_CALC ) mode = MODE_IDLE; 
 			break; 
 				 
 			case MODE_CALC_BLD:
@@ -84,7 +73,7 @@ void ui_handler( void *pvParameters )
 				//Display pi calculation on row three
 				
 				//Go back to idle when stop
-				if(xEventGroupGetBits( xPiState ) == STOP_CALC)mode = MODE_IDLE;
+				if( xEventGroupGetBits( xPiState ) & STOP_CALC ) mode = MODE_IDLE;
 			break; 
 				
 			default: 
