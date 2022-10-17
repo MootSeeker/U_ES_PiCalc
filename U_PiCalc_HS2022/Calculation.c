@@ -8,13 +8,15 @@
 #include "main.h"
 #include <math.h>
 
+st_calc gst_calc; 
+
 void calc_leibniz( void *pvParameters )
 {
 	/* Parameters not used in this task. */
 	( void ) pvParameters;
 	
-	float pi_4 = 1.0;
-	float pi_calc = 1.0;  
+	float64_t pi_4 = f_sd(1.000);
+	float64_t pi_calc = f_sd(1.000);  
 	
 	uint32_t i = 3; 
 	
@@ -48,9 +50,9 @@ void calc_leibniz( void *pvParameters )
 			{
 				do
 				{
-					pi_4 = pi_4 - ( 1.0 / i ) + ( 1.0 / ( i + 2 ));
+					pi_4 = f_sub(pi_4, f_sd(( 1.0 / i ) + ( 1.0 / ( i + 2 ))));
 					i += 4;
-					pi_calc = pi_4 * 4;
+					pi_calc = f_mult(pi_4, f_sd(4.000));
 				} while( !(xEventGroupGetBits( xPiState ) & STOP_CALC) );
 			}
 		}

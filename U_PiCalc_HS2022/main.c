@@ -65,7 +65,7 @@ int main( void )
 							   TASK_PRIORITY_CALC,
 							   &task_state[ CALC_BLD_TASK_HANDLE ].handle );
 	configASSERT( task_status == pdPASS );
-		
+	
 	/* Start the scheduler */
 	vTaskStartScheduler( );
 	
@@ -76,7 +76,7 @@ void controllerTask( void* pvParameters )
 {
 	initButtons( );
 	
-	static calc_tgl = 0; 
+	static uint8_t calc_tgl = 0; 
 	
 	while( xPiState == NULL)					// Wait for EventGroup to be initialized in other task
 	{ 

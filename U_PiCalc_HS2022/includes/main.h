@@ -39,6 +39,8 @@
 #include "NHD0420Driver.h"
 #include "ButtonHandler.h"
 
+#include "avr_f64.h"
+
 //Module Includes
 #include "ui.h"
 #include "Calculation.h"
@@ -52,7 +54,7 @@
  * NOTE: Stack sizes in WORDs, Heap in BYTEs! */
 #define TASK_STACK_CTL		( configMINIMAL_STACK_SIZE )
 #define TASK_STACK_UI		( configMINIMAL_STACK_SIZE + 200 )
-#define TASK_STACK_CALC		( configMINIMAL_STACK_SIZE )		// Global calculation stack size
+#define TASK_STACK_CALC		( configMINIMAL_STACK_SIZE + 300 )		// Global calculation stack size
 
 /* Task Priorities */
 #define TASK_PRIORITY_CTL	( 3 )
