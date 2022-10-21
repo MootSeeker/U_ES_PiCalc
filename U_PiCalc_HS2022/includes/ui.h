@@ -14,7 +14,7 @@ typedef enum
 {
 	MODE_IDLE, 
 	MODE_CALC_LBZ, 
-	MODE_CALC_BLD, 
+	MODE_CALC_NLK, 
 	
 }enDisplayMode;
 

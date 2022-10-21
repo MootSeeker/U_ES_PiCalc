@@ -15,8 +15,12 @@ void calc_leibniz( void *pvParameters )
 	/* Parameters not used in this task. */
 	( void ) pvParameters;
 	
-	float64_t pi_4 = f_sd(1.000);
-	float64_t pi_calc = f_sd(1.000);  
+	st_calc *pst_calc = &gst_calc; 
+	
+	float pi_4 = 1.000;
+	float pi_calc = 1.000;  
+	
+	char *dispb;
 	
 	uint32_t i = 3; 
 	
@@ -40,6 +44,9 @@ void calc_leibniz( void *pvParameters )
 				pi_4 = 1.0;  
 				i = 3; 
 				
+				//Clear the result too
+				pst_calc->pi = 1.00;
+				
 				//Clear Reset flag
 				xEventGroupClearBits(xPiState, RESET_CALC ); 
 			}
@@ -50,26 +57,26 @@ void calc_leibniz( void *pvParameters )
 			{
 				do
 				{
-					pi_4 = f_sub(pi_4, f_sd(( 1.0 / i ) + ( 1.0 / ( i + 2 ))));
-					i += 4;
-					pi_calc = f_mult(pi_4, f_sd(4));
+					pi_4 = pi_4 - ( 1.0 / i ) + ( 1.0 / ( i + 2 ));
+					i += 4;			
+					pi_calc = pi_4 * 4;
+					pst_calc->pi = pi_calc;  
 				} while( !(xEventGroupGetBits( xPiState ) & STOP_CALC) );
 			}
 		}
 	}
 }
 
-void calc_bellard( void *pvParameters )
+void calc_nilakantha( void *pvParameters )
 {
 	/* Parameters not used in this task. */
 	( void ) pvParameters;
 	
+	st_calc *pst_calc = &gst_calc; 
 
-	float pi_calc = 1.0;  
-	float sum1 = 1.0;
-	float sum2 = 1.0;
-	
-	uint32_t n = 0; 
+   float i = 2;    // Number of iterations and control variable
+   int8_t s = 1;   //Signal for the next operation
+   float pi = 3;
 
 	EventBits_t xEventValue;
 
@@ -81,16 +88,15 @@ void calc_bellard( void *pvParameters )
 	for( ;; )
 	{
 		//Wait until Task is selected
-		xEventValue = xEventGroupWaitBits(xPiState, CALC_SEL_BLD, pdFALSE, pdFALSE, portMAX_DELAY); 
+		xEventValue = xEventGroupWaitBits(xPiState, CALC_SEL_NLK, pdFALSE, pdFALSE, portMAX_DELAY); 
 		
 		if( xEventGroupGetBits( xPiState ) & STOP_CALC ) //When Stop than check for reset else calculate pi
 		{
 			if( xEventGroupGetBits( xPiState ) & RESET_CALC )	//Reset Calculation parameter
 			{
-				pi_calc = 1.0;
-				sum1 = 1.0;
-				sum2 = 1.0;
-				n = 0;
+
+				//Clear the result too
+				pst_calc->pi = 1.00; 
 				
 				//Clear Reset flag
 				xEventGroupClearBits(xPiState, RESET_CALC );
@@ -100,13 +106,13 @@ void calc_bellard( void *pvParameters )
 		{
 			if( xEventGroupGetBits( xPiState ) & START_CALC )
 			{
-				do
+				do // Approximation of the number PI through the sequence of the Nilakantha's series
 				{
-					sum1 = ( pow(-1, n) / (( 2 * n + 1 ) * pow( 4, n )));
-					sum2 = (1/64) * (pow(-1, n)/pow(1024, n)) * ((32/(4*n+1)) + (8/(4*n+2)) + (1/(4*n+3)));
-						
-					pi_calc = sum1 - sum2;
-					n++;
+	
+						pi = pi +  s * (4 / (i * (i + 1) * (i + 2)));
+						s = -s;
+						i += 2; 
+						pst_calc->pi = pi; 
 				} while ( !( xEventGroupGetBits( xPiState ) & STOP_CALC ));	//Stop
 			}
 		}

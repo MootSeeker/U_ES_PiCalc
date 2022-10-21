@@ -58,12 +58,12 @@ int main( void )
 	configASSERT( task_status == pdPASS );
 	
 	/* Calculate Bellard Task ------------------------------------------------------------------ */
-	task_status = xTaskCreate( calc_bellard,
-							   (const char *) "clcBld",
+	task_status = xTaskCreate( calc_nilakantha,
+							   (const char *) "clcNlk",
 							   TASK_STACK_CALC,
 							   NULL,
 							   TASK_PRIORITY_CALC,
-							   &task_state[ CALC_BLD_TASK_HANDLE ].handle );
+							   &task_state[ CALC_NLK_TASK_HANDLE ].handle );
 	configASSERT( task_status == pdPASS );
 	
 	/* Start the scheduler */
@@ -76,7 +76,8 @@ void controllerTask( void* pvParameters )
 {
 	initButtons( );
 	
-	static uint8_t calc_tgl = 0; 
+	static uint8_t calc_tgl = 0;
+	 
 	
 	while( xPiState == NULL)					// Wait for EventGroup to be initialized in other task
 	{ 
@@ -99,20 +100,20 @@ void controllerTask( void* pvParameters )
 		}
 		if( getButtonPress( BUTTON3 ) == SHORT_PRESSED ) // Reset
 		{
-			
+			xEventGroupSetBits(xPiState, RESET_CALC);
 		}
 		if( getButtonPress(BUTTON4) == SHORT_PRESSED ) // Toggle
 		{
 			if(calc_tgl) 
 			{
-				xEventGroupSetBits(xPiState, CALC_SEL_BLD); 
+				xEventGroupSetBits(xPiState, CALC_SEL_NLK); 
 				xEventGroupClearBits(xPiState, CALC_SEL_LBZ); 
 				calc_tgl = 0; 
 			}
 			else 
 			{
 				xEventGroupSetBits(xPiState, CALC_SEL_LBZ );
-				xEventGroupClearBits(xPiState, CALC_SEL_BLD );
+				xEventGroupClearBits(xPiState, CALC_SEL_NLK );
 				calc_tgl = 1; 
 			}
 		}

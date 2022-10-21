@@ -65,7 +65,7 @@
 #define CTL_TASK_HANDLE			( 0 )
 #define UI_TASK_HANDLE			( 1 )
 #define CALC_LBZ_TASK_HANDLE	( 2 )
-#define CALC_BLD_TASK_HANDLE	( 3 )
+#define CALC_NLK_TASK_HANDLE	( 3 )
 
 /*--- Event Group -------------------------------------------------------------- */
 EventGroupHandle_t xPiState;
@@ -75,9 +75,9 @@ EventGroupHandle_t xPiState;
 #define STOP_CALC		( 1U << 1UL )	// Stop Calculation
 #define RESET_CALC		( 1U << 2UL )	// Reset Calculation task  
 #define CALC_SEL_LBZ	( 1U << 3UL )	// Select Calculation algorithm
-#define CALC_SEL_BLD	( 1U << 4UL )	// Select Calculation algorithm
+#define CALC_SEL_NLK	( 1U << 4UL )	// Select Calculation algorithm
 #define BIT5			( 1U << 5UL )	// unused
 #define LBZ_STATE		( 1U << 6UL )	// Leibnitz Task state
-#define BLD_STATE		( 1U << 7UL )	// Bellard Task state
+#define NLK_STATE		( 1U << 7UL )	// Bellard Task state
 
 #endif /* MAIN_H_ */

@@ -11,12 +11,12 @@
 
 typedef struct 
 {
-	
+	float pi; 
 }st_calc;
 
 extern st_calc gst_calc; 
 
 void calc_leibniz( void *pvParameters ); 
-void calc_bellard( void *pvParameters ); 
+void calc_nilakantha( void *pvParameters ); 
 
 #endif /* CALCULATION_H_ */
