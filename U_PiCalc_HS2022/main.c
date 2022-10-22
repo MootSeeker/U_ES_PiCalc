@@ -7,10 +7,12 @@
 
 #include "main.h"
 
-void controllerTask(void* pvParameters);
+
+static void controllerTask(void* pvParameters);
+
 
 /* Task handles for heap overflow monitoring. */
-#define TASK_STATES_MAX ( 5 )
+#define TASK_STATES_MAX ( 7 )
 
 typedef struct
 {
@@ -37,7 +39,7 @@ int main( void )
 							   NULL,									//
 							   TASK_PRIORITY_UI,						// Task Priority
 							   &task_state[ UI_TASK_HANDLE ].handle );	// Task Handle
-	configASSERT( task_status == pdPASS );								// Check if task created correct
+	//configASSERT( task_status == pdPASS );								// Check if task created correct
 		
 	/* Controll Task --------------------------------------------------------------------------- */
 	task_status = xTaskCreate( controllerTask,
@@ -46,7 +48,7 @@ int main( void )
 				               NULL,
 				               TASK_PRIORITY_CTL,
 				               &task_state[ CTL_TASK_HANDLE ].handle );
-	configASSERT( task_status == pdPASS );				
+	//configASSERT( task_status == pdPASS );				
 
 	/* Calculate Leibniz Task ------------------------------------------------------------------ */
 	task_status = xTaskCreate( calc_leibniz,
@@ -55,7 +57,7 @@ int main( void )
 							   NULL,
 							   TASK_PRIORITY_CALC,
 							   &task_state[ CALC_LBZ_TASK_HANDLE ].handle );
-	configASSERT( task_status == pdPASS );
+	//configASSERT( task_status == pdPASS );
 	
 	/* Calculate Bellard Task ------------------------------------------------------------------ */
 	task_status = xTaskCreate( calc_nilakantha,
@@ -64,7 +66,25 @@ int main( void )
 							   NULL,
 							   TASK_PRIORITY_CALC,
 							   &task_state[ CALC_NLK_TASK_HANDLE ].handle );
-	configASSERT( task_status == pdPASS );
+	//configASSERT( task_status == pdPASS );
+	
+	/* Measure time of calculation Task -------------------------------------------------------- */
+	task_status = xTaskCreate( calcTimeHandlerTask,
+							   (const char *) "clcTim",
+ 							   TASK_STACK_TIME,
+ 							   NULL,
+							   TASK_PRIORITY_TIME,
+							   &task_state[ CALC_TIME_HANDLE ].handle );
+	////configASSERT( task_status == pdPASS );
+	
+	/* LED handler Task ------------------------------------------------------------------------ */
+	task_status = xTaskCreate( led_handler, 
+							   (const char *) "ledHdl", 
+							   TASK_STACK_LED, 
+							   NULL, 
+							   TASK_PRIORITY_LED, 
+							   &task_state[ LED_TASK_HANDLE ].handle ); 
+	//configASSERT( task_status == pdPASS ); 
 	
 	/* Start the scheduler */
 	vTaskStartScheduler( );
@@ -72,13 +92,15 @@ int main( void )
 	return 0;
 }
 
-void controllerTask( void* pvParameters ) 
+static void controllerTask( void* pvParameters ) 
 {
+	/* Parameters not used in this task. */
+	( void ) pvParameters;
+	
 	initButtons( );
 	
 	static uint8_t calc_tgl = 0;
-	 
-	
+		
 	while( xPiState == NULL)					// Wait for EventGroup to be initialized in other task
 	{ 
 		vTaskDelay( 10 / portTICK_RATE_MS );
@@ -136,3 +158,4 @@ void controllerTask( void* pvParameters )
 		vTaskDelay(10/portTICK_RATE_MS);
 	}
 }
+

@@ -20,8 +20,6 @@ void calc_leibniz( void *pvParameters )
 	float pi_4 = 1.000;
 	float pi_calc = 1.000;  
 	
-	char *dispb;
-	
 	uint32_t i = 3; 
 	
 	EventBits_t xEventValue; 

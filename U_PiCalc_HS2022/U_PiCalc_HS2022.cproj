@@ -296,6 +296,12 @@
     <Compile Include="includes\Calculation.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="includes\calc_time.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="includes\calc_time.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="includes\errorHandler.h">
       <SubType>compile</SubType>
     </Compile>

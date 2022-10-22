@@ -20,5 +20,6 @@ typedef enum
 
 
 void ui_handler( void *pvParameters ); 
+void led_handler( void *pvParameters ); 
 
 #endif /* UI_H_ */
