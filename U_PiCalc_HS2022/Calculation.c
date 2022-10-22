@@ -96,6 +96,10 @@ void calc_nilakantha( void *pvParameters )
 				//Clear the result too
 				pst_calc->pi = 1.00; 
 				
+				i = 2;    // Number of iterations and control variable
+				s = 1;   //Signal for the next operation
+				pi = 3;
+
 				//Clear Reset flag
 				xEventGroupClearBits(xPiState, RESET_CALC );
 			}
@@ -107,8 +111,8 @@ void calc_nilakantha( void *pvParameters )
 				do // Approximation of the number PI through the sequence of the Nilakantha's series
 				{
 	
-						pi = pi +  s * (4 / (i * (i + 1) * (i + 2)));
-						s = -s;
+						pi = pi + (s * (4 / ((i) * (i + 1) * (i + 2))));
+						s = s * (-1);
 						i += 2; 
 						pst_calc->pi = pi; 
 				} while ( !( xEventGroupGetBits( xPiState ) & STOP_CALC ));	//Stop

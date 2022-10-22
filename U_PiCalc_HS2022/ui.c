@@ -39,15 +39,13 @@ void ui_handler( void *pvParameters )
 	{
 		// Draw tilte on every page same :)
 		vDisplayClear(); //Clear Display before rewriting it
-		vDisplayWriteStringAtPos(0,0,"Pi Calculation V1.0 PEK"); 
+		vDisplayWriteStringAtPos(0,0,"Pi Calc V1.0 PEK"); 
 						
 		switch( mode )
 		{
 			case MODE_IDLE:
 				vDisplayClear();
 				vDisplayWriteStringAtPos(1,0,"Mode: Idle");
-				
-				//xEventGroupSetBits(xPiState, BIT5); //Clear accurate LED 
 				
 				if( xEventGroupGetBits( xPiState ) & CALC_SEL_NLK )
 				{
@@ -80,7 +78,7 @@ void ui_handler( void *pvParameters )
 				vDisplayWriteStringAtPos(1,0,"Mode:Calc Nilakantha");
 				
 				//Display pi calculation on row three
-				sprintf(dispBuffer, "Pi: %0.6f |T:%ldms", pst_calc->pi, pst_time->calc_time); 
+				sprintf(dispBuffer, "Pi: %0.6f |T:%ldms", pst_calc->pi, pst_time->calc_time/1000); 
 				vDisplayWriteStringAtPos(2,0,dispBuffer);
 				
 				//Go back to idle when stop

@@ -59,7 +59,7 @@ int main( void )
 							   &task_state[ CALC_LBZ_TASK_HANDLE ].handle );
 	//configASSERT( task_status == pdPASS );
 	
-	/* Calculate Bellard Task ------------------------------------------------------------------ */
+	/* Calculate nilakantha Task ------------------------------------------------------------------ */
 	task_status = xTaskCreate( calc_nilakantha,
 							   (const char *) "clcNlk",
 							   TASK_STACK_CALC,
@@ -75,7 +75,7 @@ int main( void )
  							   NULL,
 							   TASK_PRIORITY_TIME,
 							   &task_state[ CALC_TIME_HANDLE ].handle );
-	////configASSERT( task_status == pdPASS );
+	configASSERT( task_status == pdPASS );
 	
 	/* LED handler Task ------------------------------------------------------------------------ */
 	task_status = xTaskCreate( led_handler, 
