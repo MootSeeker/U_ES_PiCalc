@@ -167,9 +167,6 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="avr_f64.c">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="ButtonHandler.c">
       <SubType>compile</SubType>
     </Compile>
@@ -285,9 +282,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="includes\avr_compiler.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="includes\avr_f64.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="includes\ButtonHandler.h">
